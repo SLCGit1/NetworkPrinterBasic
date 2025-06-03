@@ -115,6 +115,6 @@ Because this script runs without elevation and uses standard Windows APIs, it is
 
 ---
 
-## 👨‍💻 Author
+## 👨🏾‍💻 Author
 
 Jesus M. Ayala - Sarah Lawrence College.
