@@ -13,7 +13,15 @@ This PowerShell script provides a graphical interface (GUI) that allows users to
 - Displays printer share names and descriptive comments (location/model)
 - GUI interface with "Install Selected" and "Exit" buttons
 - Uses built-in Windows `printui.dll` for printer installation
-
+- Dynamic detection of shared printers from a remote SMB print server
+- GUI-based selection with multi-column list view
+- Automatic printer installation using `Add-Printer`
+- Supports silent mode, auto-install, and force reinstall flags
+- Fallback printer list if server lookup fails
+- Supports non-admin users (install via Point and Print)
+- Responsive layout with stretch and resize handling
+- Modernized look using `System.Windows.Forms` with anchors
+- Full debug logging and CLI param support
 ---
 
 ## 🔧 Requirements
