@@ -1,4 +1,4 @@
-# NetworkPrinterBasic(No Admin Required)
+# NetworkSharedPrinterBasic(No Admin Required)
 
 ## Overview
 
