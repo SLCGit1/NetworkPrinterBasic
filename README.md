@@ -104,7 +104,7 @@ Start-Process -FilePath "rundll32.exe" -ArgumentList "printui.dll,PrintUIEntry /
 ## ✅ Example
 
 ```powershell
-.\NetworkPrinterGuilist2.ps1 -PrintServer "vm-printq.admin.slc.edu"
+.\NetworkPrinterGuilist2.ps1 -PrintServer "PrintServerFQDN"
 ```
 
 ---
