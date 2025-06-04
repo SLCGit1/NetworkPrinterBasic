@@ -35,7 +35,7 @@ This PowerShell script provides a graphical interface (GUI) that allows users to
 ### 🔹 Basic Run (Interactive GUI)
 
 ```powershell
-.\NetworkPrinterGui.ps1
+.\NetworkPrinterGuiList2.ps1
 ```
 
 - Uses the default server (if defined inside the script)
@@ -47,7 +47,7 @@ This PowerShell script provides a graphical interface (GUI) that allows users to
 ### 🔹 Use with Specific Print Server
 
 ```powershell
-.\NetworkPrinterGui.ps1 -PrintServer "printserverFQDN"
+.\NetworkPrinterGuiList2.ps1 -PrintServer "printserverFQDN"
 ```
 
 - Overrides the default and fetches printers from the specified host
@@ -57,7 +57,7 @@ This PowerShell script provides a graphical interface (GUI) that allows users to
 ### 🔹 Silent Install with Auto Mode
 
 ```powershell
-.\NetworkPrinterGui.ps1 -PrintServer "vm-printq.admin.slc.edu" -Silent -AutoInstall
+.\NetworkPrinterGuiList2.ps1 -PrintServer "printserverFQDN" -Silent -AutoInstall
 ```
 
 - Suppresses GUI
@@ -70,7 +70,7 @@ This PowerShell script provides a graphical interface (GUI) that allows users to
 
 | Parameter         | Description                                                                 |
 |------------------|-----------------------------------------------------------------------------|
-| `-PrintServer`    | Set the print server host (e.g., `vm-printq.admin.slc.edu`)                |
+| `-PrintServer`    | Set the print server host (e.g., `printserverFQDN`)                |
 | `-Silent`         | Run with no GUI. **Only meaningful if combined with `-AutoInstall`**       |
 | `-AutoInstall`    | Automatically install all discovered printers. Requires `-Silent`          |
 
@@ -111,7 +111,7 @@ Start-Process "rundll32.exe" -ArgumentList "printui.dll,PrintUIEntry /in /n`"$fu
 ## 🧪 Example
 
 ```powershell
-.\NetworkPrinterGui.ps1 -PrintServer "vm-printq.admin.slc.edu"
+.\NetworkPrinterGuiList2.ps1 -PrintServer "printserverFQDN"
 ```
 
 ---
