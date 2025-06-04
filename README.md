@@ -47,7 +47,7 @@ This PowerShell script provides a graphical interface (GUI) that allows users to
 ### 🔹 Use with Specific Print Server
 
 ```powershell
-.\NetworkPrinterGui.ps1 -PrintServer "vm-printq.admin.slc.edu"
+.\NetworkPrinterGui.ps1 -PrintServer "printserverFQDN"
 ```
 
 - Overrides the default and fetches printers from the specified host
