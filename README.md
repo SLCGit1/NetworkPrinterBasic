@@ -1,6 +1,6 @@
-# NetworkSharedPrinterBasic(No Admin Required)
+# NetworkSharedPrinterBasic (No Admin Required)
 
-## Overview
+## 🖨️ Overview
 
 This PowerShell script provides a graphical interface (GUI) that allows users to view, select, and install shared network printers from a remote print server. It is specifically designed to work **without requiring administrative privileges**. The script dynamically queries available printers via `net view`, extracts share names and comments, and presents them in a list.
 
@@ -8,79 +8,86 @@ This PowerShell script provides a graphical interface (GUI) that allows users to
 
 ## 📦 Features
 
-- No admin rights required
-- Dynamically retrieves printer shares from a remote server
-- Displays printer share names and descriptive comments (location/model)
-- GUI interface with "Install Selected" and "Exit" buttons
-- Uses built-in Windows `printui.dll` for printer installation
-- Dynamic detection of shared printers from a remote SMB print server
-- GUI-based selection with multi-column list view
-- Automatic printer installation using `Add-Printer`
-- Supports silent mode, auto-install, and force reinstall flags
-- Fallback printer list if server lookup fails
-- Supports non-admin users (install via Point and Print)
-- Responsive layout with stretch and resize handling
-- Modernized look using `System.Windows.Forms` with anchors
-- Full debug logging and CLI param support
+- ✅ No admin rights required
+- 🔍 Dynamically retrieves printer shares from a remote SMB print server
+- 🗒️ Displays printer share names and descriptive comments (location/model)
+- 🪟 GUI interface with multi-column layout and responsive design
+- 🔘 "Install Selected" and "Exit" buttons for simple user control
+- 🖨️ Uses Windows `printui.dll` to install printers
+- 🧑‍💻 Supports non-admin installs via Point and Print
+- 🔧 Fallback static list when live lookup fails
+- 🏃 CLI parameters for scripting or automated deployment
+- 📋 Full debug logging for troubleshooting
+- 📐 Anchored and resizable layout (modern WinForms UI)
+
 ---
 
 ## 🔧 Requirements
 
-- Windows OS with PowerShell
-- Network access to the print server
-- Shared printers available via `net view \\\\printserver`
+- Windows OS (PowerShell 5.1+)
+- Network access to the remote print server
+- Printers shared via `net view \\PrintServer`
 
 ---
 
 ## 🚀 Usage
 
-### Basic Run (interactive GUI):
+### 🔹 Basic Run (Interactive GUI)
 
 ```powershell
-.\NNetworkPrinterGuilist2.ps1
+.\NetworkPrinterGui.ps1
 ```
 
-This will:
-- Query the default print server (`PrintServerFQDN`)
-- Show a GUI list of available printers
-- Let you select one or more printers to install
+- Uses the default server (if defined inside the script)
+- Launches a GUI to view and select printers
+- Installs selected printers via built-in Windows tools
 
 ---
 
-### Run with Specific Print Server:
+### 🔹 Use with Specific Print Server
 
 ```powershell
-.\NetworkPrinterGuilist2.ps1 -PrintServer "my-print-server"
+.\NetworkPrinterGui.ps1 -PrintServer "vm-printq.admin.slc.edu"
 ```
 
-Replace `"my-print-server"` with your print server's hostname or IP.
+- Overrides the default and fetches printers from the specified host
 
 ---
 
-### Optional Parameters
+### 🔹 Silent Install with Auto Mode
 
-| Parameter        | Description                                                             |
-|------------------|-------------------------------------------------------------------------|
-| `-PrintServer`   | Override the default print server address                               |
-| `-Silent`        | Run silently (no GUI); ignored unless combined with `-AutoInstall`      |
-| `-AutoInstall`   | Automatically install all retrieved printers (requires `-Silent`)       |
-| `-ForceReinstall`| (future use) Force reinstall if already installed                       |
-| `-ShowAll`       | (future use) Show hidden or filtered printers                           |
+```powershell
+.\NetworkPrinterGui.ps1 -PrintServer "vm-printq.admin.slc.edu" -Silent -AutoInstall
+```
+
+- Suppresses GUI
+- Installs **all** discovered printers automatically
+- Use this for mass deployments or login scripts
 
 ---
 
-## 🧠 Key Script Breakdown
+## ⚙️ Parameters
 
-### 1. Retrieve Printer List
+| Parameter         | Description                                                                 |
+|------------------|-----------------------------------------------------------------------------|
+| `-PrintServer`    | Set the print server host (e.g., `vm-printq.admin.slc.edu`)                |
+| `-Silent`         | Run with no GUI. **Only meaningful if combined with `-AutoInstall`**       |
+| `-AutoInstall`    | Automatically install all discovered printers. Requires `-Silent`          |
+
+---
+
+## 🧠 Script Breakdown
+
+### 🔸 Step 1: Discover Printers
 
 ```powershell
 net view \\$PrintServer > "$env:TEMP\\netview_temp.txt"
 ```
 
-- This lists all shared resources on the print server.
-- The script filters entries of type `Print` and grabs the share name and comment.
+- Extracts all shared resources
+- Filters for those marked as `Print` type
 
-### 2. Parse Output
+### 🔸 Step 2: Parse Printer Data
 
 ```powershell
 $parts = $line -split '\s{2,}'
@@ -88,33 +95,38 @@ $share = $parts[0].Trim()
 $comment = if ($parts.Count -gt 2) { $parts[2].Trim() } else { "N/A" }
 ```
 
-- Grabs the first and third column.
-- If the comment is missing or same as the share name, it's shown as `"N/A"`.
+- Comment used as location or description
+- If missing, `"N/A"` is shown in the location field
 
-### 3. Install Printer via:
+### 🔸 Step 3: Install Selected Printers
 
 ```powershell
-Start-Process -FilePath "rundll32.exe" -ArgumentList "printui.dll,PrintUIEntry /in /n`"$fullPath`""
+Start-Process "rundll32.exe" -ArgumentList "printui.dll,PrintUIEntry /in /n`"$fullUNC`""
 ```
 
-- Leverages Windows built-in tools to install the printer.
+- Uses built-in tools — no need for `Get-Printer` or admin rights
 
 ---
 
-## ✅ Example
+## 🧪 Example
 
 ```powershell
-.\NetworkPrinterGuilist2.ps1 -PrintServer "PrintServerFQDN"
+.\NetworkPrinterGui.ps1 -PrintServer "vm-printq.admin.slc.edu"
 ```
 
 ---
 
-## 🔒 Security
+## 🛡️ Security Notes
 
-Because this script runs without elevation and uses standard Windows APIs, it is safe for deployment across user environments. However, always validate network security policies before automated installation.
+- No elevation is needed
+- Uses standard Windows tools and APIs
+- Does not modify system configuration or registry
+- Safe for use in domain or lab environments with Point and Print enabled
 
 ---
 
 ## 👨🏾‍💻 Author
 
-Jesus M. Ayala - Sarah Lawrence College.
+**Jesus M. Ayala**  
+ITS Help Desk, Sarah Lawrence College  
+🔧 Built for network-wide deployment and end-user self-service
